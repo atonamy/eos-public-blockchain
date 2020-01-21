@@ -1,5 +1,5 @@
 # EOS Public Blockchain
-### Techbical test
+### Technical test
 
 ## Features
 
