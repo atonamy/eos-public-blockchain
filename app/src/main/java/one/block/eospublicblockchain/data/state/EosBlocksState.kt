@@ -20,14 +20,15 @@ data class EosBlocksState (
         get() {
             var loadedCounts = 0
             this.forEach {
-                if(it.value is Success)
+                if(it.value !is Loading)
                     loadedCounts++
             }
             return loadedCounts == totalBlocks.toInt()
         }
 
     val canReload: Boolean
-        get() = latestBlockNumber is Loading ||
-                loadedBlocks.size  == totalBlocks.toInt() && loadedBlocks.allLoaded
+        get() = latestBlockNumber is Loading || (loadedBlocks.isNotEmpty() &&
+                    loadedBlocks.size  == totalBlocks.toInt() &&
+                    loadedBlocks.allLoaded)
 
 }
