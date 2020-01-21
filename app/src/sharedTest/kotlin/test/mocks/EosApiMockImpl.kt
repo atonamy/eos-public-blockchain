@@ -2,12 +2,10 @@ package test.mocks
 
 import com.google.gson.Gson
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
 import one.block.eosiojava.models.rpcProvider.response.GetBlockResponse
 import one.block.eospublicblockchain.data.model.EosBlockInfo
 import one.block.eospublicblockchain.data.parsers.RpcBlockParser
 import one.block.eospublicblockchain.network.api.EosApi
-import org.threeten.bp.LocalDateTime
 import java.math.BigInteger
 
 class EosApiMockImpl(private val startBlock: BigInteger,
