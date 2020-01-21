@@ -1,5 +1,5 @@
 # EOS Public Blockchain
-### Techbical test
+### Technical test
 
 ## Features
 
@@ -20,4 +20,3 @@ Please use modern Android Studio 3.5.X to run the project
 ![Blocks Screen](https://user-images.githubusercontent.com/5222190/72801219-00809d80-3c84-11ea-9ea5-03502e927914.png)
 
 ![Block Details Screen](https://user-images.githubusercontent.com/5222190/72801585-c49a0800-3c84-11ea-82af-9ad81a83376d.png)
-
