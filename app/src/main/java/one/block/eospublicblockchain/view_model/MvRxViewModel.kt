@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import org.koin.core.Koin
-import org.koin.core.KoinComponent
 import org.koin.core.qualifier.named
 import org.koin.core.scope.Scope
 import kotlin.reflect.KProperty1
