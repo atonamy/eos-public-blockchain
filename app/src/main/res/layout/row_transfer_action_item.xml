@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="model"
+            type="one.block.eospublicblockchain.data.model.EosAction.Transfer" />
+        <import type="android.view.View" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        >
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/transfer_label"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/fromTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/from_title"
+            android:layout_marginTop="8dp"
+            app:fontFamily="@font/montserrat_medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tag" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/from"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@{model.from}"
+            app:fontFamily="@font/montserrat_regular"
+            app:layout_constraintStart_toEndOf="@+id/fromTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tag"
+            tools:text="arsenius" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/toTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/to_title"
+            app:fontFamily="@font/montserrat_medium"
+            app:layout_constraintEnd_toStartOf="@+id/to"
+            app:layout_constraintTop_toBottomOf="@+id/tag" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{model.to}"
+            android:layout_marginTop="8dp"
+            app:fontFamily="@font/montserrat_regular"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tag"
+            tools:text="GOD"
+            />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/memoTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/memo_title"
+            android:layout_marginTop="8dp"
+            android:visibility="@{(model.memo == null || model.memo.isEmpty()) ? View.INVISIBLE : View.VISIBLE}"
+            app:fontFamily="@font/montserrat_medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fromTitle" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/memo"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@{model.memo}"
+            app:fontFamily="@font/montserrat_regular"
+            app:layout_constraintStart_toEndOf="@+id/memoTitle"
+            app:layout_constraintTop_toBottomOf="@+id/from"
+            tools:text="sponsorship" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/amountTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/amount_title"
+            app:fontFamily="@font/montserrat_medium"
+            app:layout_constraintEnd_toStartOf="@+id/amount"
+            app:layout_constraintTop_toBottomOf="@+id/toTitle" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/amount"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="@{model.amount}"
+            android:layout_marginTop="8dp"
+            android:gravity="right"
+            app:fontFamily="@font/montserrat_regular"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/to"
+            tools:text="0.002 EOS"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

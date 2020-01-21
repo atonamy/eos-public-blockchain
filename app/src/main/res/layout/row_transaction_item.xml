@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="model"
+            type="one.block.eospublicblockchain.data.model.EosTransaction" />
+
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        >
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/txid"
+            android:gravity="center_vertical"
+            android:text="@string/transaction_title"
+            android:fontFamily="@font/montserrat_medium"
+            />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txid"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@+id/title"
+            android:text="@{model.id}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:fontFamily="@font/montserrat_regular"
+            tools:text="06065a0c5a587935a3b0e5603dca2dec574dcaea02847f88945329e78166ec40"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="onBlockClick"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="model"
+            type="one.block.eospublicblockchain.data.model.EosBlockInfo" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{onBlockClick}"
+        android:padding="16dp">
+
+
+        <com.github.curioustechizen.ago.RelativeTimeTextView
+            android:id="@+id/created"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:fontFamily="@font/montserrat_regular"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:date="@{model.created}"
+            android:gravity="right"
+            android:textColor="@android:color/darker_gray"
+            tools:text="Just Now" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/blockTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/block_title"
+            app:fontFamily="@font/montserrat_medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/created" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/block"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@{model.number.toString()}"
+            app:fontFamily="@font/montserrat_regular"
+            app:layout_constraintStart_toEndOf="@+id/blockTitle"
+            app:layout_constraintTop_toBottomOf="@+id/created"
+            tools:text="101060462" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/producerTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/producer_title"
+            app:fontFamily="@font/montserrat_medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/block" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/producer"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@{model.producer}"
+            app:fontFamily="@font/montserrat_regular"
+            app:layout_constraintStart_toEndOf="@+id/producerTitle"
+            app:layout_constraintTop_toBottomOf="@+id/block"
+            tools:text="someone"
+
+            />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/transactionsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/transactions_title"
+            app:fontFamily="@font/montserrat_medium"
+            app:layout_constraintEnd_toStartOf="@+id/transactions"
+            app:layout_constraintTop_toBottomOf="@+id/created" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/transactions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{Integer.toString(model.transactionsCount)}"
+            app:fontFamily="@font/montserrat_regular"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/created"
+            tools:text="25"
+            />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/actionsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="@+id/transactionsTitle"
+            android:text="@string/actions_title"
+            app:fontFamily="@font/montserrat_medium"
+            app:layout_constraintTop_toBottomOf="@+id/transactionsTitle" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/actions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{Integer.toString(model.actionsCount)}"
+            app:fontFamily="@font/montserrat_regular"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/transactions"
+            tools:text="1000"
+
+            />
+
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/signature"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{model.signature + @string/signature_title}"
+            app:fontFamily="@font/montserrat_regular"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/producerTitle"
+            tools:text="SIG_K1_KBR1X8Nr4CUo35Vj7SxBd4AiGjivaNKWUeWnqBFsyQmQbTJHuRviUURdGWHP8U3qzZThMUuvL1VhfHpzaZjCu6ehQzSNgf (Signature)"
+            android:textColor="@android:color/darker_gray"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

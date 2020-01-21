@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">EOS Public Blockchain</string>
+
+    <string name="display_blocks_text">Display 20 most recent blocks</string>
+    <string name="retry_text">Retry</string>
+    <string name="block_title">Block: </string>
+    <string name="producer_title">Producer: </string>
+    <string name="transactions_title">Transactions: </string>
+    <string name="actions_title">Actions: </string>
+    <string name="signature_title">&#160;(Signature)</string>
+    <string name="transaction_title">Transaction: </string>
+    <string name="from_title">From: </string>
+    <string name="to_title">To: </string>
+    <string name="memo_title">Memo: </string>
+    <string name="amount_title">Amount: </string>
+    <string name="type_title">Type: </string>
+    <string name="raw_data_header">Raw Data</string>
+    <string name="transfer_label">Transfer</string>
+    <string name="execute_label">Execution</string>
+    <string name="unknown_error">Oops! Something went wrong...</string>
+    <string name="block_details_text">Block Details</string>
+    <string name="cut_off_reason">(cut off to avoid UI lagging)</string>
+</resources>

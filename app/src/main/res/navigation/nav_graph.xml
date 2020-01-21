@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/chat_nav_graph"
+    app:startDestination="@id/blocksFragment"
+    >
+    <fragment
+        android:id="@+id/blocksFragment"
+        android:name="one.block.eospublicblockchain.ui.fragments.EosBlocksFragment"
+        >
+        <action
+            app:launchSingleTop="true"
+            android:id="@+id/showBlockDetails"
+            app:destination="@id/blockDetails"
+            />
+    </fragment>
+
+    <fragment android:id="@+id/blockDetails"
+        android:name="one.block.eospublicblockchain.ui.fragments.EosBlockDetailsFragment"
+        >
+        <argument
+            android:name="blockNumber"
+            app:argType="string"
+            />
+    </fragment>
+
+
+
+</navigation>
+
+
+
+
+
+
+
+
