@@ -1,7 +1,6 @@
 package one.block.eospublicblockchain.view_model
 
 import com.airbnb.mvrx.*
-import com.dropbox.android.external.store4.StoreResponse
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -9,7 +8,6 @@ import kotlinx.coroutines.flow.collect
 import org.koin.core.Koin
 import org.koin.core.qualifier.named
 import org.koin.core.scope.Scope
-import java.util.concurrent.TimeoutException
 
 abstract class MvRxViewModel<S : MvRxState>(initialState: S, private val koin: Koin) :
     BaseMvRxViewModel<S>(initialState, debugMode = BuildConfig.DEBUG) {
@@ -23,8 +21,7 @@ abstract class MvRxViewModel<S : MvRxState>(initialState: S, private val koin: K
         koinScope = koin.getOrCreateScope("ViewModel", named<T>())
     }
 
-    protected fun <T> Flow<StoreResponse<T>>.execute(completed: (suspend () -> Unit)? = null,
-                                                     stateReducer: S.(Async<T>) -> S) =
+    protected fun <T> Flow<T>.execute(stateReducer: S.(Async<T>) -> S) =
         scope.launch {
             try {
                 setState {
@@ -34,31 +31,22 @@ abstract class MvRxViewModel<S : MvRxState>(initialState: S, private val koin: K
                     setState {
                         stateReducer(this, Fail(it))
                     }
-                    completed?.invoke()
                 }
                 collect {
-                    val error = it.errorOrNull()
-                    val state = when {
-                        it is StoreResponse.Loading -> Loading<T>()
-                        error != null -> Fail(error)
-                        else -> Success(it.requireData())
-                    }
                     setState {
                         stateReducer(
                             this,
-                            state
+                            Success(it)
                         )
                     }
-                    if(state !is Loading)
-                        completed?.invoke()
                 }
             } catch (e: Exception) {
                 setState {
                     stateReducer(this, Fail(e))
                 }
-                completed?.invoke()
             }
         }
+
 
     override fun onCleared() {
         super.onCleared()

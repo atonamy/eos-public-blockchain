@@ -1,13 +1,13 @@
 package one.block.eospublicblockchain.view_model
 
 import com.airbnb.mvrx.*
-import com.dropbox.android.external.store4.StoreRequest
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import one.block.eospublicblockchain.data.state.EosBlocksState
 import one.block.eospublicblockchain.data.state.SingleEvent
 import one.block.eospublicblockchain.data.store.EosBlockInfoStore
 import one.block.eospublicblockchain.data.store.LatestEosBlockNumberStore
+import one.block.eospublicblockchain.network.api.EosApi
 import org.koin.core.Koin
 import org.koin.core.KoinComponent
 import java.math.BigInteger
@@ -31,27 +31,20 @@ class EosBlocksViewModel(
         }
     }
 
-    private val latestBlockStore by koinScope.inject<LatestEosBlockNumberStore>()
-    private val blockInfoStore by koinScope.inject<EosBlockInfoStore>()
+    private val api by koinScope.inject<EosApi>()
 
     fun requestLatestBlocks(quantity: Short) {
         setState {
             copy(latestBlockNumber = Uninitialized, loadedBlocks = emptyMap(), totalBlocks = quantity)
         }
 
-        latestBlockStore.value.stream(StoreRequest.fresh(Unit)).execute({
-            latestBlockStore.value.clear(Unit)
-        }) {
+        api.getLatestBlock().execute {
             copy(latestBlockNumber = it)
         }
     }
 
     fun requestSpecificBlock(blockNumber: BigInteger) {
-        blockInfoStore.value.stream(
-            StoreRequest.fresh(blockNumber))
-            .execute({
-                blockInfoStore.value.clear(blockNumber)
-            }) { blockInfo ->
+        api.getBlockInfo(blockNumber).execute { blockInfo ->
                 copy(loadedBlocks = when(blockInfo) {
                     is Loading -> loadedBlocks + (blockNumber to Loading())
                     is Fail -> loadedBlocks + (blockNumber to Fail(blockInfo.error))
