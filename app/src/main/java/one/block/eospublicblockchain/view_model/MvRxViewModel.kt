@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.collect
 import org.koin.core.Koin
 import org.koin.core.qualifier.named
 import org.koin.core.scope.Scope
+import java.util.concurrent.TimeoutException
 
 abstract class MvRxViewModel<S : MvRxState>(initialState: S, private val koin: Koin) :
     BaseMvRxViewModel<S>(initialState, debugMode = BuildConfig.DEBUG) {
@@ -23,47 +24,50 @@ abstract class MvRxViewModel<S : MvRxState>(initialState: S, private val koin: K
     }
 
     @Suppress("NON_PUBLIC_CALL_FROM_PUBLIC_INLINE")
-    protected inline fun <T> Flow<StoreResponse<T>>.execute(crossinline stateReducer: S.(Async<T>) -> S) {
-        var job: Job? = null
-        job = scope.launch {
+    protected inline fun <T> Flow<StoreResponse<T>>.execute(crossinline stateReducer: S.(Async<T>) -> S) =
+        scope.launch {
             try {
                 setState {
                     stateReducer(this, Loading())
                 }
-                withTimeout(30000) {
-                    catch {
-                        if(it !is CancellationException)
-                            setState {
-                                stateReducer(this, Fail(it))
-                            }
-                        job?.cancel()
-                    }
-                    collect {
-                        val error = it.errorOrNull()
-                        val state =  when {
-                            it is StoreResponse.Loading -> Loading<T>()
-                            error != null -> Fail(error)
-                            else -> Success(it.requireData())
-                        }
-                        setState {
-                            stateReducer(
-                                this,
-                                state
-                            )
-                        }
-                        if(state !is Loading)
-                            job?.cancel()
+
+                val timeout = scope.launch {
+                    delay(30000)
+                    setState {
+                        stateReducer(
+                            this,
+                            Fail(TimeoutException("timeout"))
+                        )
                     }
                 }
-            } catch (e: Exception) {
-                if(e !is CancellationException)
+
+                catch {
                     setState {
-                        stateReducer(this, Fail(e))
+                        stateReducer(this, Fail(it))
                     }
-                job?.cancel()
+                }
+                collect {
+                    val error = it.errorOrNull()
+                    val state = when {
+                        it is StoreResponse.Loading -> Loading<T>()
+                        error != null -> Fail(error)
+                        else -> Success(it.requireData())
+                    }
+                    setState {
+                        stateReducer(
+                            this,
+                            state
+                        )
+                    }
+                    if (state !is Loading)
+                        timeout.cancel()
+                }
+            } catch (e: Exception) {
+                setState {
+                    stateReducer(this, Fail(e))
+                }
             }
         }
-    }
 
     override fun onCleared() {
         super.onCleared()
