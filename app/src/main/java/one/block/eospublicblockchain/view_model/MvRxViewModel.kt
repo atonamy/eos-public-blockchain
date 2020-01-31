@@ -12,7 +12,7 @@ import org.koin.core.scope.Scope
 abstract class MvRxViewModel<S : MvRxState>(initialState: S, private val koin: Koin) :
     BaseMvRxViewModel<S>(initialState, debugMode = BuildConfig.DEBUG) {
 
-    protected val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     protected lateinit var koinScope: Scope
 
 

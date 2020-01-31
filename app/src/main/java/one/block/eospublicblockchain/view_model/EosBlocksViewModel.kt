@@ -1,12 +1,13 @@
 package one.block.eospublicblockchain.view_model
 
+import androidx.lifecycle.viewModelScope
 import com.airbnb.mvrx.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import one.block.eospublicblockchain.data.state.EosBlocksState
 import one.block.eospublicblockchain.data.state.SingleEvent
-import one.block.eospublicblockchain.data.store.EosBlockInfoStore
-import one.block.eospublicblockchain.data.store.LatestEosBlockNumberStore
 import one.block.eospublicblockchain.network.api.EosApi
 import org.koin.core.Koin
 import org.koin.core.KoinComponent
@@ -21,10 +22,12 @@ class EosBlocksViewModel(
         initKoinScope<EosBlocksViewModel>()
         asyncSubscribe(EosBlocksState::latestBlockNumber) {
             withState { state ->
-                scope.launch {
+                viewModelScope.launch {
                     for(i in 0 until state.totalBlocks) {
                         requestSpecificBlock(it.minus(BigInteger.valueOf(i.toLong())))
-                        delay(250) //eos rpc throw error if load simultaneously
+                        withContext(Dispatchers.IO) {
+                            delay(250) //eos rpc throw error if load simultaneously
+                        }
                     }
                 }
             }
