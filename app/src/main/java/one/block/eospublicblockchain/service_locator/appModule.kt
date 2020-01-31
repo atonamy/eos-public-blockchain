@@ -20,7 +20,7 @@ fun Module.bodyModules(api: EosApi) {
     scope(named<EosBlocksViewModel>()) {
         scoped {
             LatestEosBlockNumberStore(StoreBuilder
-                .fromNonFlow <Unit, BigInteger> {
+                .from <Unit, BigInteger> {
                     api.getLatestBlock()
                 }
                 .build())
@@ -28,7 +28,7 @@ fun Module.bodyModules(api: EosApi) {
 
         scoped {
             EosBlockInfoStore(StoreBuilder
-                .fromNonFlow <BigInteger, EosBlockInfo> {
+                .from <BigInteger, EosBlockInfo> {
                     api.getBlockInfo(it)
                 }
                 .build())

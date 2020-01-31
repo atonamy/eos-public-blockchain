@@ -23,28 +23,18 @@ abstract class MvRxViewModel<S : MvRxState>(initialState: S, private val koin: K
         koinScope = koin.getOrCreateScope("ViewModel", named<T>())
     }
 
-    @Suppress("NON_PUBLIC_CALL_FROM_PUBLIC_INLINE")
-    protected inline fun <T> Flow<StoreResponse<T>>.execute(crossinline stateReducer: S.(Async<T>) -> S) =
+    protected fun <T> Flow<StoreResponse<T>>.execute(completed: (suspend () -> Unit)? = null,
+                                                     stateReducer: S.(Async<T>) -> S) =
         scope.launch {
             try {
                 setState {
                     stateReducer(this, Loading())
                 }
-
-                val timeout = scope.launch {
-                    delay(30000)
-                    setState {
-                        stateReducer(
-                            this,
-                            Fail(TimeoutException("timeout"))
-                        )
-                    }
-                }
-
                 catch {
                     setState {
                         stateReducer(this, Fail(it))
                     }
+                    completed?.invoke()
                 }
                 collect {
                     val error = it.errorOrNull()
@@ -59,13 +49,14 @@ abstract class MvRxViewModel<S : MvRxState>(initialState: S, private val koin: K
                             state
                         )
                     }
-                    if (state !is Loading)
-                        timeout.cancel()
+                    if(state !is Loading)
+                        completed?.invoke()
                 }
             } catch (e: Exception) {
                 setState {
                     stateReducer(this, Fail(e))
                 }
+                completed?.invoke()
             }
         }
 

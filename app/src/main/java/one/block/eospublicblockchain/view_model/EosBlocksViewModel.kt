@@ -39,15 +39,19 @@ class EosBlocksViewModel(
             copy(latestBlockNumber = Uninitialized, loadedBlocks = emptyMap(), totalBlocks = quantity)
         }
 
-        latestBlockStore.value.stream(StoreRequest.fresh(Unit)).execute {
+        latestBlockStore.value.stream(StoreRequest.fresh(Unit)).execute({
+            latestBlockStore.value.clear(Unit)
+        }) {
             copy(latestBlockNumber = it)
         }
     }
 
     fun requestSpecificBlock(blockNumber: BigInteger) {
-        blockInfoStore.value
-            .stream(StoreRequest.fresh(blockNumber))
-            .execute { blockInfo ->
+        blockInfoStore.value.stream(
+            StoreRequest.fresh(blockNumber))
+            .execute({
+                blockInfoStore.value.clear(blockNumber)
+            }) { blockInfo ->
                 copy(loadedBlocks = when(blockInfo) {
                     is Loading -> loadedBlocks + (blockNumber to Loading())
                     is Fail -> loadedBlocks + (blockNumber to Fail(blockInfo.error))
