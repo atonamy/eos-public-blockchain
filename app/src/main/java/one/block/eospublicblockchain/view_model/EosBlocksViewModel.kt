@@ -49,10 +49,10 @@ class EosBlocksViewModel(
             .stream(StoreRequest.fresh(blockNumber))
             .execute { blockInfo ->
                 copy(loadedBlocks = when(blockInfo) {
-                    is Loading -> loadedBlocks + mapOf(blockNumber to Loading())
-                    is Fail -> loadedBlocks + mapOf(blockNumber to Fail(blockInfo.error))
-                    is Success -> loadedBlocks + mapOf(blockNumber to Success(blockInfo()))
-                    else -> loadedBlocks + mapOf(blockNumber to Uninitialized)
+                    is Loading -> loadedBlocks + (blockNumber to Loading())
+                    is Fail -> loadedBlocks + (blockNumber to Fail(blockInfo.error))
+                    is Success -> loadedBlocks + (blockNumber to Success(blockInfo()))
+                    else -> loadedBlocks + (blockNumber to Uninitialized)
                 })
             }
     }
