@@ -1,5 +1,6 @@
 package one.block.eospublicblockchain.view_model
 
+import androidx.lifecycle.viewModelScope
 import com.airbnb.mvrx.*
 import com.dropbox.android.external.store4.StoreRequest
 import kotlinx.coroutines.delay
@@ -21,7 +22,7 @@ class EosBlocksViewModel(
         initKoinScope<EosBlocksViewModel>()
         asyncSubscribe(EosBlocksState::latestBlockNumber) {
             withState { state ->
-                scope.launch {
+                viewModelScope.launch {
                     for(i in 0 until state.totalBlocks) {
                         requestSpecificBlock(it.minus(BigInteger.valueOf(i.toLong())))
                         delay(250) //eos rpc throw error if load simultaneously
